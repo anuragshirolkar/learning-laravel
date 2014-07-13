@@ -22,7 +22,7 @@ class StylesController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('style.create');
 	}
 
 
@@ -33,7 +33,10 @@ class StylesController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$style = new Style;
+		$style->style = Input::get('style');
+		$style->save();
+		return Redirect::route('style.index');
 	}
 
 
@@ -55,9 +58,11 @@ class StylesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($styleid)
 	{
-		//
+		$style = Style::find($styleid);
+		return View::make('style.edit')
+			->with('style', $style);
 	}
 
 
@@ -67,9 +72,12 @@ class StylesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($styleid)
 	{
-		//
+		$style = Style::find($styleid);
+		$style->style = Input::get('style');
+		$style->save();
+		return Redirect::route('style.index');
 	}
 
 

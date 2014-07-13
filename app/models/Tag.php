@@ -6,6 +6,9 @@ class Tag extends Eloquent{
 
 	protected $fillable = array('tag');
 
+	/**
+	 * Returns list of all tags (just tags)
+	 */
 	public static function listTags(){
 		$tags = static::all();
 		$a = array();
@@ -14,7 +17,22 @@ class Tag extends Eloquent{
 		}
 		return $a;
 	}
-	
+
+
+	/**
+	 * Update database with new tags
+	 */
+	public static function updateWithNew($tags){
+		$tags = explode(',', $tags);
+		foreach ($tags as $tag){
+			$tagsFound = static::where('tag','=', $tag)->get();
+			if(sizeof($tagsFound) == 0){
+				$newtag = new Tag;
+				$newtag->tag = $tag;
+				$newtag->save();
+			}
+		}
+	}
 	
 
 }

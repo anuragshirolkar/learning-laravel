@@ -7,7 +7,7 @@ Admin | Sizes
 @section ('content')
 <h3>Sizes</h3>
 @foreach ($sizes as $size)
-	{{ $size->description }}<a href="{{ URL::route('admin.editsize', array($size->id)) }}">Edit</a><br>
+	{{ $size->size }}<a href="{{ URL::route('size.edit', array($size->id)) }}">Edit</a><br>
 @endforeach
 @stop
 

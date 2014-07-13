@@ -9,7 +9,19 @@ class TshirtsController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$styles = Style::all();
+		$filterStyles = Input::get('filters');
+		if($filterStyles != NULL){
+			$tshirts = Tshirt::orderByFilter($filterStyles);
+		}
+		else{
+			$tshirts = Tshirt::all();
+			$filterStyles = array();
+		}
+		return View::make('tshirt.index')
+			->with('tshirts', $tshirts)
+			->with('styles', $styles)
+			->with('filters', $filterStyles);
 	}
 
 
@@ -20,7 +32,7 @@ class TshirtsController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('tshirt.create');
 	}
 
 
@@ -32,8 +44,15 @@ class TshirtsController extends \BaseController {
 	public function store()
 	{
 		$image = Input::file('image');
-		$input_data = Input::only('title', 'description', 'tags', 'sizes', 'wash_care', 'price');
-		return Redirect::back()->withInput();
+		$input_data = Input::only('title', 'description', 'tags', 'sizes', 'styles', 'fabrics', 'wash_care', 'price', 'colors');
+		$destination = base_path().'/public/img/tshirts/';
+		$filename = Str::random(10).'.'.$image->getClientOriginalExtension();
+		$image->move($destination, $filename);
+		Tag::updateWithNew($input_data['tags']);
+		$tshirt = new Tshirt;
+		$tshirt->initializeWithData($input_data, $filename);
+		$tshirt->save();
+		return Redirect::route('admin.index');
 	}
 
 
@@ -43,9 +62,11 @@ class TshirtsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($tshirtid)
 	{
-		
+		$tshirt = Tshirt::find($tshirtid);
+		return View::make('tshirt.show')
+			->with('tshirt', $tshirt);
 	}
 
 
@@ -55,9 +76,19 @@ class TshirtsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($tshirtid)
 	{
-		//
+		$tshirt = Tshirt::find($tshirtid);
+		$styles = explode(',', $tshirt->styles);
+		$colors = explode(',', $tshirt->colors);
+		$sizes = explode(',', $tshirt->sizes);
+		$fabrics = explode(',', $tshirt->fabric);
+		return View::make('tshirt.edit')
+			->with('tshirt',$tshirt)
+			->with('styles', $styles)
+			->with('colors', $colors)
+			->with('sizes', $sizes)
+			->with('fabrics', $fabrics);
 	}
 
 
@@ -67,9 +98,23 @@ class TshirtsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($tshirtid)
 	{
-		//
+		$tshirt = Tshirt::find($tshirtid);
+		$input_data = Input::only('title', 'description', 'tags', 'sizes', 'styles', 'fabrics', 'wash_care', 'price', 'colors');
+		$filename = $tshirt->image;
+		if(Input::hasFile('image')){
+			$image = Input::file('image');
+			$destination = base_path().'/public/img/tshirts/';
+			$oldfilename = $tshirt->image;
+			File::delete($destination.$oldfilename);
+			$filename = Str::random(10).'.'.$image->getClientOriginalExtension();
+			$image->move($destination, $filename);
+		}
+		Tag::updateWithNew($input_data['tags']);
+		$tshirt->initializeWithData($input_data, $filename);
+		$tshirt->save();
+		return Redirect::route('admin.index');
 	}
 
 
@@ -86,3 +131,4 @@ class TshirtsController extends \BaseController {
 
 
 }
+

@@ -11,9 +11,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	protected $fillable = ['username', 'password', 'email', 'name', 'phone', 'address', 'town', 'state', 'pincode'];
 	
 	public static $rules = [
-		'username' => 'required',
+		'username' => 'required|unique:users',
 		'password' => 'required',
-		'email' => 'email',
+		'email' => 'email|unique:users',
 		'name' => 'required',
 		'phone' => 'required',
 		'address' => 'required',
@@ -37,5 +37,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var array
 	 */
 	protected $hidden = array('password', 'remember_token');
+
+
+	/**
+	 * Save the cart into the database
+	 */
+	public function saveCart($cart){
+		$this->cart = serialize($cart);
+		$this->save();
+	}
 
 }

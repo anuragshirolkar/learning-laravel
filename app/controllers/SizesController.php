@@ -22,7 +22,7 @@ class SizesController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('size.create');
 	}
 
 
@@ -33,7 +33,10 @@ class SizesController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$size = new Size;
+		$size->size = Input::get('size');
+		$size->save();
+		return Redirect::route('size.index');
 	}
 
 
@@ -55,9 +58,11 @@ class SizesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($sizeid)
 	{
-		//
+		$size = Size::find($sizeid);
+		return View::make('size.edit')
+			->with('size', $size);
 	}
 
 
@@ -70,9 +75,9 @@ class SizesController extends \BaseController {
 	public function update($sizeid)
 	{
 		$size = Size::find($sizeid);
-		$size->description = Input::get('size');
+		$size->size = Input::get('size');
 		$size->save();
-		return Redirect::route('sizes.show');
+		return Redirect::route('size.index');
 	}
 
 

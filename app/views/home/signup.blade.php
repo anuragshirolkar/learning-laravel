@@ -13,7 +13,7 @@ Sign Up
 		@endforeach
 	</div>
 	@endif
-	<div class="form-control">
+	<div class="form-group">
 		<label for="name">Name</label>
 		<input type="text" class="form-control" name="name" value="{{ Input::old('name') }}" id="name">
 	</div>
@@ -37,15 +37,15 @@ Sign Up
 		<label for="address">Address</label>
 		<input type="text" name="address" class="form-control" value="{{ Input::old('address') }}" id="address" required>
 	</div>
-	<div class="form-control">
+	<div class="form-group">
 		<label for="town">Town/City</label>
 		<input type="text" name="town" class="form-control" value="{{ Input::old('town') }}" id="town" required>
 	</div>
-	<div class="form-control">
+	<div class="form-group">
 		<label for="state">State</label>
 		{{ Form::select('state', ['Maharashtra' => 'Maharashtra',  'Bihar' => 'Bihar']) }}
 	</div>
-	<div class="form-control">
+	<div class="form-group">
 		<label for="pincode">Postcode/Zip</label>
 		<input type="text" class="form-control" id="pincode" value="{{ Input::old('pincode') }}" name="pincode" required>
 	</div>

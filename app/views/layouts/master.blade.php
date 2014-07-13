@@ -16,6 +16,12 @@
 		@yield ('content')
 
 	</body>
+	<style>
+		@import url(//fonts.googleapis.com/css?family=Lato:700);
+		body{
+			font-family: 'Lato';
+		}
+	</style>
 	@section ('package-scripts')
 		<script src="{{ URL::asset('packages/jquery/jquery.min.js') }}"></script>
 		<script src="{{ URL::asset('packages/bootstrap/js/bootstrap.js') }}"></script> 

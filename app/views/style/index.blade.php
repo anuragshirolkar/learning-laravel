@@ -8,7 +8,7 @@ Admin | Styles
 
 <h3>Styles</h3>
 @foreach ($styles as $style)
-	{{ $style->style }}<a href="{{ URL::route('admin.editstyle', array($style->id)) }}">Edit</a><br>
+	{{ $style->style }}<a href="{{ URL::route('style.edit', array($style->id)) }}">Edit</a><br>
 @endforeach
 
 

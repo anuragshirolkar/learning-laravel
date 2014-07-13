@@ -9,7 +9,9 @@ class FabricsController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$fabrics = Fabric::all();
+		return View::make('fabric.index')
+			->with('fabrics', $fabrics);
 	}
 
 
@@ -20,7 +22,7 @@ class FabricsController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('fabric.create');
 	}
 
 
@@ -31,7 +33,11 @@ class FabricsController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$fabric = new Fabric;
+		$fabric->name = Input::get('name');
+		$fabric->description = Input::get('description');
+		$fabric->save();
+		return Redirect::route('fabric.index');
 	}
 
 
@@ -53,9 +59,11 @@ class FabricsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($fabricid)
 	{
-		//
+		$fabric = Fabric::find($fabricid);
+		return View::make('fabric.edit')
+			->with('fabric', $fabric);
 	}
 
 
@@ -65,9 +73,13 @@ class FabricsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($fabricid)
 	{
-		//
+		$fabric = Fabric::find($fabricid);
+		$fabric->name = Input::get('name');
+		$fabric->description = Input::get('description');
+		$fabric->save();
+		return Redirect::route('fabric.index');
 	}
 
 

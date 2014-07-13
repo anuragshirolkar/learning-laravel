@@ -21,7 +21,7 @@ class ColorsController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('color.create');
 	}
 
 
@@ -38,7 +38,7 @@ class ColorsController extends \BaseController {
 		$color->code = $input_data['code'];
 		$color->save();
 		$message = 'Color created: <div style="background-color:{{ $color->code }}">{{ $color->color }}</div>';
-		return Redirect::route('colors.show')
+		return Redirect::route('color.index')
 			->with('message', $message);
 	}
 
@@ -61,9 +61,11 @@ class ColorsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($colorid)
 	{
-		//
+		$color = Color::find($colorid);
+		return View::make('color.edit')
+			->with('color', $color);
 	}
 
 
@@ -80,7 +82,7 @@ class ColorsController extends \BaseController {
 		$color->color = $input_data['color'];
 		$color->code = $input_data['code'];
 		$color->save();
-		return Redirect::route('colors.show');
+		return Redirect::route('color.index');
 	}
 
 
