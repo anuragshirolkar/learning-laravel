@@ -43,14 +43,17 @@ class TshirtsController extends \BaseController {
 	 */
 	public function store()
 	{
-		$image = Input::file('image');
 		$input_data = Input::only('title', 'description', 'tags', 'sizes', 'styles', 'fabrics', 'wash_care', 'price', 'colors');
 		$destination = base_path().'/public/img/tshirts/';
-		$filename = Str::random(10).'.'.$image->getClientOriginalExtension();
-		$image->move($destination, $filename);
+		$filenames = array();
+		foreach (Input::file() as $image){
+			$filename = Str::random(10).'.'.$image->getClientOriginalExtension();
+			array_push($filenames, $filename);
+			$image->move($destination, $filename);
+		}
 		Tag::updateWithNew($input_data['tags']);
 		$tshirt = new Tshirt;
-		$tshirt->initializeWithData($input_data, $filename);
+		$tshirt->initializeWithData($input_data, $filenames);
 		$tshirt->save();
 		return Redirect::route('admin.index');
 	}
@@ -103,13 +106,16 @@ class TshirtsController extends \BaseController {
 		$tshirt = Tshirt::find($tshirtid);
 		$input_data = Input::only('title', 'description', 'tags', 'sizes', 'styles', 'fabrics', 'wash_care', 'price', 'colors');
 		$filename = $tshirt->image;
-		if(Input::hasFile('image')){
-			$image = Input::file('image');
-			$destination = base_path().'/public/img/tshirts/';
-			$oldfilename = $tshirt->image;
-			File::delete($destination.$oldfilename);
-			$filename = Str::random(10).'.'.$image->getClientOriginalExtension();
-			$image->move($destination, $filename);
+		$imageids = array([1, 2]);
+		foreach ($imageids as $imageid){
+			if(Input::hasFile('image'.$imageid)){
+				$image = Input::file('image'.$imageid);
+				$destination = base_path().'/public/img/tshirts/';
+				$oldfilename = explode(',',$tshirt->image)[$imageid];
+				File::delete($destination.$oldfilename);
+				$filename = Str::random(10).'.'.$image->getClientOriginalExtension();
+				$image->move($destination, $filename);
+			}
 		}
 		Tag::updateWithNew($input_data['tags']);
 		$tshirt->initializeWithData($input_data, $filename);

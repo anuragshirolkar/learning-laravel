@@ -7,7 +7,7 @@ class Tshirt extends Eloquent{
 	/**
 	 * Initialize with input data
 	 */
-	public function initializeWithData($data, $image){
+	public function initializeWithData($data, $images){
 		$this->title = $data['title'];
 		$this->tags = $data['tags'];
 		$this->description = $data['description'];
@@ -17,7 +17,7 @@ class Tshirt extends Eloquent{
 		$this->sizes = implode(',', $data['sizes']);
 		$this->wash_care = $data['wash_care'];
 		$this->price = $data['price'];
-		$this->image = $image;
+		$this->image = implode(',', $images);
 	}
 
 	/**

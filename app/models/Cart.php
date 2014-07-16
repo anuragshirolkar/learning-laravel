@@ -33,12 +33,29 @@ class Cart{
 		return $cart;
 	}
 
+
+	/**
+	 * Check if exists
+	 */
+	public function checkExists($id, $size, $color){
+		foreach($this->tshirts as $key => $tshirt){
+			if($id == $tshirt['id'] && $size == $tshirt['size'] && $color == $tshirt['color']) return $key;
+		}
+		return -1;
+	}
+
 	/**
 	 * Adds a tshirt to the cart
 	 */
 	public function addTshirt($id, $size, $color, $quantity){
-		array_push($this->tshirts, array('id'=>$id, 'size'=>$size, 'color'=>$color, 'quantity'=>$quantity));
-		$this->tshirtsQuant += $quantity;
+		$exists = $this->checkExists($id, $size, $color);
+		if($exists != -1){
+			$this->tshirts[$exists]['quantity'] += $quantity;
+		}
+		else{
+			array_push($this->tshirts, array('id'=>$id, 'size'=>$size, 'color'=>$color, 'quantity'=>$quantity));
+			$this->tshirtsQuant += $quantity;
+		}
 	}
 
 	/**

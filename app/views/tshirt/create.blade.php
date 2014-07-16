@@ -47,9 +47,13 @@ Admin | Add Tshirt
 		<div id="colors"></div>
 	</div>
 	<div class="form-group">
-		<label for="image">Upload Image</label>
-		<input type="file" id="image" name="image">
+		<label for="image1">Upload First Image</label>
+		<input type="file" id="image1" name="image1">
 	</div> 
+	<div class="form-group">
+		<label for="image2">Upload Second Image</label>
+		<input type="file" id="image2" name="image2">
+	</div>
 	<button class="btn btn-primary" type="submit">Submit</button>
 </form>
 

@@ -6,8 +6,7 @@
 
 
 
-@section ('content')
-
+@section ('content') 
 <div class="row container">
 	@if ($errors->has('cart_update'))
 		<div class="alert alert-success alert-dismissible" role="alert">
